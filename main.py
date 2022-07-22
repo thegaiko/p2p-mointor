@@ -8,6 +8,7 @@ from bybit import getBybit
 from hook import sendHook, startHook
 
 startHook()
+ 
 while True:
     binanceBuy = getBinance.buy()
     binanceSell = getBinance.sell()
