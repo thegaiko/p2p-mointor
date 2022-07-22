@@ -25,10 +25,21 @@ headers = {
 
 methods = {"75": "Tinkoff", "5": "Advcash", "90": "Cash in person", "14": "Bank Transfer", "185": "Rosbank", "162": "Skrill", "51": "Payeer", "111": "Neteller", "102": "Home Credit Bank", "64": "Raiffeisenbank", "62": "QIWI", "274": "Юmoney", "88": "Yandex Money"}
 
+def getReq(type, method):
+  payload=f'userId=&tokenId=USDT&currencyId=RUB&payment={method}&side={type}&size=10&page=1&amount='
+  r = requests.request("POST", url, headers=headers, data=payload).json()['result']['items'][0]
+  return r
+  
 class getBybit:
     def buy():
-        payload='userId=&tokenId=USDT&currencyId=RUB&payment=&side=1&size=10&page=1&amount='
-        r = requests.request("POST", url, headers=headers, data=payload).json()['result']['items'][0]
+      r = getReq(1, 75)
+      qiwi = getReq(1, 62) 
+      if float(qiwi['price']) < float(r['price']):
+          r = qiwi
+      rosbank = getReq(1, 185)  
+      if float(rosbank['price']) < float(r['price']):
+        r = rosbank
+          
         merchant = str(r['userId'])
         payMethods = r['payments']
         allPayMethods = ''
@@ -36,7 +47,7 @@ class getBybit:
           x = methods[f'{payMethods[i]}']
           allPayMethods+=f'{x}\n'
         return ({
-                "platform": "bybit",
+                "platform": "Bybit",
                 "maxLimit": r['maxAmount'],
                 "minLimit": r['minAmount'],
                 "quantity": r['lastQuantity'],
@@ -47,8 +58,14 @@ class getBybit:
                 })
         
     def sell():
-        payload='userId=&tokenId=USDT&currencyId=RUB&payment=&side=0&size=10&page=1&amount='
-        r = requests.request("POST", url, headers=headers, data=payload).json()['result']['items'][0]
+        r = getReq(0, 75)
+        qiwi = getReq(0, 62) 
+        if float(qiwi['price']) > float(r['price']):
+            r = qiwi
+        rosbank = getReq(0, 185)  
+        if float(rosbank['price']) > float(r['price']):
+          r = rosbank
+        
         merchant = str(r['userId'])
         payMethods = r['payments']
         allPayMethods = ''
@@ -56,7 +73,7 @@ class getBybit:
           x = methods[f'{payMethods[i]}']
           allPayMethods+=f'{x}\n'
         return ({
-                "platform": "bybit",
+                "platform": "Bybit",
                 "maxLimit": r['maxAmount'],
                 "minLimit": r['minAmount'],
                 "quantity": r['lastQuantity'],

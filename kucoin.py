@@ -32,7 +32,7 @@ class getKucoin:
               tradeMethods+=type[i]
             tradeMethods+=('\n')
         return ({
-                "platform": "kucoin",
+                "platform": "Kucoin",
                 "maxLimit": r['limitMaxQuote'],
                 "minLimit": r['limitMinQuote'],
                 "quantity": r['currencyBalanceQuantity'],
@@ -55,12 +55,12 @@ class getKucoin:
               tradeMethods+=type[i]
             tradeMethods+=('\n')
         return ({
-                "platform": "kucoin",
+                "platform": "Kucoin",
                 "maxLimit": r['limitMaxQuote'],
                 "minLimit": r['limitMinQuote'],
                 "quantity": r['currencyBalanceQuantity'],
                 "userName": r['nickName'],
                 "price": float(r['premium']),
                 "tradeMethods": tradeMethods,
-                "link": f'https://www.kucoin.com/ru/otc/buy/USDT-RUB'
+                "link": f'https://www.kucoin.com/ru/otc/sell/USDT-RUB'
                 })

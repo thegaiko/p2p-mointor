@@ -22,19 +22,29 @@ headers = {
   'x-utc': '3'
 }
 
+def getReq(type, method):
+    url = f'https://www.okx.com/v3/c2c/tradingOrders/books?t=1658405145766&quoteCurrency=RUB&baseCurrency=USDT&side={type}&paymentMethod={method}&userType=all&showTrade=false&showFollow=false&showAlreadyTraded=false&isAbleFilter=false&urlId=4'
+    r = requests.request("GET", url, headers=headers)
+    r = r.json()['data'][type][0]
+    return r
 
 class getOkx:
     def buy():
-        url = "https://www.okx.com/v3/c2c/tradingOrders/books?t=1658405145766&quoteCurrency=RUB&baseCurrency=USDT&side=sell&paymentMethod=all&userType=all&showTrade=false&showFollow=false&showAlreadyTraded=false&isAbleFilter=false&urlId=4"
-        r = requests.request("GET", url, headers=headers)
-        r = r.json()['data']['sell'][0]
+        r = getReq('sell', 'Tinkoff')
+        qiwi = getReq('sell', 'QiWi') 
+        if float(qiwi['price']) < float(r['price']):
+            r = qiwi
+        rosbank = getReq('sell', 'Rosbank')  
+        if float(rosbank['price']) < float(r['price']):
+          r = rosbank
+
         merchantId = r['merchantId']
         methods = r['paymentMethods']
         tradeMethods = ''
         for method in methods:
             tradeMethods += f'{method}\n'
         return ({
-            "platform": "okx",
+            "platform": "Okx",
             "maxLimit": r['quoteMinAmountPerOrder'],
             "minLimit": r['quoteMaxAmountPerOrder'],
             "quantity": r['availableAmount'],
@@ -45,16 +55,22 @@ class getOkx:
             })
 
     def sell():
-        url = "https://www.okx.com/v3/c2c/tradingOrders/books?t=1658405145766&quoteCurrency=RUB&baseCurrency=USDT&side=buy&paymentMethod=all&userType=all&showTrade=false&showFollow=false&showAlreadyTraded=false&isAbleFilter=false&urlId=4"
-        r = requests.request("GET", url, headers=headers)
-        r = r.json()['data']['buy'][0]
+        r = getReq('buy', 'Tinkoff')
+        qiwi = getReq('buy', 'QiWi') 
+        if float(qiwi['price']) > float(r['price']):
+            r = qiwi
+        rosbank = getReq('buy', 'Rosbank')  
+        if float(rosbank['price']) > float(r['price']):
+          r = rosbank
+
+        
         merchantId = r['merchantId']
         methods = r['paymentMethods']
         tradeMethods = ''
         for method in methods:
             tradeMethods += f'{method}\n'
         return ({
-            "platform": "okx",
+            "platform": "Okx",
             "maxLimit": r['quoteMinAmountPerOrder'],
             "minLimit": r['quoteMaxAmountPerOrder'],
             "quantity": r['availableAmount'],
@@ -63,3 +79,4 @@ class getOkx:
             "tradeMethods": tradeMethods,
             "link": f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
             })
+    
