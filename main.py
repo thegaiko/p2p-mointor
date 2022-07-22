@@ -5,8 +5,9 @@ from binance import getBinance
 from okx import getOkx
 from kucoin import getKucoin
 from bybit import getBybit
-from hook import sendHook
+from hook import sendHook, startHook
 
+startHook()
 while True:
     binanceBuy = getBinance.buy()
     binanceSell = getBinance.sell()

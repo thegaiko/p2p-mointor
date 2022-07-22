@@ -2,6 +2,32 @@ import requests
 
 url = "https://discord.com/api/webhooks/999994956221521970/KQi--erj7Vt5Agj-tKIZYgs2G-qBZXHgIB_295gL4W9YSjJC-l6PCSh6GnoAtr1WspEy"
 
+def startHook():
+    data = {
+        "username" : "Arbitration"
+    }
+    data["embeds"] = [
+        {
+        "title": "ARBIT P2P MONITOR",
+        "description": "**STARTED**",
+        "color": 12910592,
+        "footer": {
+            "text": "ARBIT",
+            "icon_url": "https://sun9-58.userapi.com/impf/jgOkfU_yUf-HUS1_zd73z61ZpJZi1l6l6PxRjA/JtNJ-75JJtY.jpg?size=1624x1624&quality=95&sign=c4820a07df07b1312763693a050d833d&type=album"
+        }
+        }
+    ]
+
+    result = requests.post(url, json = data)
+
+    try:
+        result.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    else:
+        print("Payload delivered successfully, code {}.".format(result.status_code))
+    
+
 
 def sendHook(buy, sell):
     buyPlatform = buy['platform']
