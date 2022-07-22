@@ -23,7 +23,7 @@ headers = {
   'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 }
 
-methods = {"75": "Tinkoff", "5": "Advcash", "90": "Cash in person", "14": "Bank Transfer", "185": "Rosbank", "162": "Skrill", "51": "Payeer", "111": "Neteller", "102": "Home Credit Bank", "64": "Raiffeisenbank", "62": "QIWI", "274": "Юmoney", "88": "Yandex Money"}
+methods = {"75": "Tinkoff", "27": "FPS", "5": "Advcash", "90": "Cash in person", "14": "Bank Transfer", "185": "Rosbank", "162": "Skrill", "51": "Payeer", "111": "Neteller", "102": "Home Credit Bank", "64": "Raiffeisenbank", "62": "QIWI", "274": "Юmoney", "88": "Yandex Money"}
 
 def getReq(type, method):
   payload=f'userId=&tokenId=USDT&currencyId=RUB&payment={method}&side={type}&size=10&page=1&amount='
