@@ -1,6 +1,5 @@
+from pprint import pprint
 import requests
-
-url = "https://www.kucoin.com/_api/otc/ad/list?currency=USDT&side=SELL&legal=RUB&page=1&pageSize=10&status=PUTUP&lang=ru_RU"
 
 payload={}
 headers = {
@@ -18,6 +17,50 @@ headers = {
   'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 }
 
-r = requests.request("GET", url, headers=headers, data=payload)
-r = r.json()['items'][0]
-
+class getKucoin:
+    def buy():
+        url = "https://www.kucoin.com/_api/otc/ad/list?currency=USDT&side=BUY&legal=RUB&page=1&pageSize=10&status=PUTUP&lang=ru_RU"
+        r = requests.request("GET", url, headers=headers, data=payload)
+        r = r.json()['items'][0]
+        tradeMethods = ''
+        adPayTypes = r['adPayTypes']
+        for bankName in adPayTypes:
+          type = (bankName['reservedFields'])
+          count = len(type)
+          if count > 2:
+            for i in range(16, count-2):
+              tradeMethods+=type[i]
+            tradeMethods+=('\n')
+        return ({
+                "platform": "kucoin",
+                "maxLimit": r['limitMaxQuote'],
+                "minLimit": r['limitMinQuote'],
+                "quantity": r['currencyBalanceQuantity'],
+                "userName": r['nickName'],
+                "price": float(r['premium']),
+                "tradeMethods": tradeMethods,
+                "link": f'https://www.kucoin.com/ru/otc/buy/USDT-RUB'
+                })
+    def sell():
+        url = "https://www.kucoin.com/_api/otc/ad/list?currency=USDT&side=SELL&legal=RUB&page=1&pageSize=10&status=PUTUP&lang=ru_RU"
+        r = requests.request("GET", url, headers=headers, data=payload)
+        r = r.json()['items'][0]
+        tradeMethods = ''
+        adPayTypes = r['adPayTypes']
+        for bankName in adPayTypes:
+          type = (bankName['reservedFields'])
+          count = len(type)
+          if count > 2:
+            for i in range(16, count-2):
+              tradeMethods+=type[i]
+            tradeMethods+=('\n')
+        return ({
+                "platform": "kucoin",
+                "maxLimit": r['limitMaxQuote'],
+                "minLimit": r['limitMinQuote'],
+                "quantity": r['currencyBalanceQuantity'],
+                "userName": r['nickName'],
+                "price": float(r['premium']),
+                "tradeMethods": tradeMethods,
+                "link": f'https://www.kucoin.com/ru/otc/buy/USDT-RUB'
+                })

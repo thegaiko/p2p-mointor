@@ -1,5 +1,5 @@
-import requests
 from pprint import pprint
+import requests
 
 url = "https://www.okx.com/v3/c2c/tradingOrders/books?t=1658405145766&quoteCurrency=RUB&baseCurrency=USDT&side=buy&paymentMethod=all&userType=all&showTrade=false&showFollow=false&showAlreadyTraded=false&isAbleFilter=false&urlId=4"
 
@@ -29,12 +29,18 @@ class getOkx:
         r = requests.request("GET", url, headers=headers)
         r = r.json()['data']['sell'][0]
         merchantId = r['merchantId']
+        methods = r['paymentMethods']
+        tradeMethods = ''
+        for method in methods:
+            tradeMethods += f'{method}\n'
         return ({
+            "platform": "okx",
             "maxLimit": r['quoteMinAmountPerOrder'],
             "minLimit": r['quoteMaxAmountPerOrder'],
             "quantity": r['availableAmount'],
             "userName": r['nickName'],
-            "price": r['price'],
+            "price": float(r['price']),
+            "tradeMethods": tradeMethods,
             "link": f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
             })
 
@@ -43,11 +49,17 @@ class getOkx:
         r = requests.request("GET", url, headers=headers)
         r = r.json()['data']['buy'][0]
         merchantId = r['merchantId']
+        methods = r['paymentMethods']
+        tradeMethods = ''
+        for method in methods:
+            tradeMethods += f'{method}\n'
         return ({
+            "platform": "okx",
             "maxLimit": r['quoteMinAmountPerOrder'],
             "minLimit": r['quoteMaxAmountPerOrder'],
             "quantity": r['availableAmount'],
             "userName": r['nickName'],
-            "price": r['price'],
+            "price": float(r['price']),
+            "tradeMethods": tradeMethods,
             "link": f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
             })

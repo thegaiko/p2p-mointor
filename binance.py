@@ -1,3 +1,4 @@
+from pprint import pprint
 import requests
 
 headers = {
@@ -31,13 +32,19 @@ class getBinance:
     r = requests.post('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', headers=headers, json=data).json()
     
     userNo = r['data'][0]['advertiser']['userNo']
+    tradeMethods = ''
+    for methods in r['data'][0]['adv']['tradeMethods']:
+      method = methods['identifier']
+      tradeMethods+= f'{method}\n'
     
     return ({
+      "platform": "binance",
       "maxLimit": r['data'][0]['adv']['maxSingleTransAmount'],
       "minLimit": r['data'][0]['adv']['minSingleTransQuantity'],
       "quantity": r['data'][0]['adv']['tradableQuantity'],
       "userName": r['data'][0]['advertiser']['nickName'],
-      "price": r['data'][0]['adv']['price'],
+      "price": float(r['data'][0]['adv']['price']),
+      "tradeMethods": tradeMethods,
       "link": f'https://p2p.binance.com/ru/advertiserDetail?advertiserNo={userNo}'
     })
     
@@ -55,13 +62,18 @@ class getBinance:
     r = requests.post('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', headers=headers, json=data).json()
     
     userNo = r['data'][0]['advertiser']['userNo']
+    tradeMethods = ''
+    for methods in r['data'][0]['adv']['tradeMethods']:
+      method = methods['identifier']
+      tradeMethods+= f'{method}\n'
     
     return ({
+      "platform": "binance",
       "maxLimit": r['data'][0]['adv']['maxSingleTransAmount'],
       "minLimit": r['data'][0]['adv']['minSingleTransQuantity'],
       "quantity": r['data'][0]['adv']['tradableQuantity'],
       "userName": r['data'][0]['advertiser']['nickName'],
-      "price": r['data'][0]['adv']['price'],
+      "price": float(r['data'][0]['adv']['price']),
+      "tradeMethods": tradeMethods,
       "link": f'https://p2p.binance.com/ru/advertiserDetail?advertiserNo={userNo}'
     })
-  
