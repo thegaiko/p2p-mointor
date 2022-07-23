@@ -31,6 +31,8 @@ class getKucoin:
             for i in range(16, count-2):
               tradeMethods+=type[i]
             tradeMethods+=('\n')
+        if tradeMethods == '':
+          tradeMethods = '-'
         return ({
                 "platform": "Kucoin",
                 "maxLimit": r['limitMaxQuote'],
@@ -54,6 +56,8 @@ class getKucoin:
             for i in range(16, count-2):
               tradeMethods+=type[i]
             tradeMethods+=('\n')
+        if tradeMethods == '':
+          tradeMethods = '-'
         return ({
                 "platform": "Kucoin",
                 "maxLimit": r['limitMaxQuote'],

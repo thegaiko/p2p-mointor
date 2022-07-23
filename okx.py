@@ -37,8 +37,14 @@ class getOkx:
         rosbank = getReq('sell', 'Rosbank')  
         if float(rosbank['price']) < float(r['price']):
           r = rosbank
-
+        
         merchantId = r['merchantId']
+        if merchantId == '':
+            link = 'https://www.okx.com/ru/p2p-markets/rub/buy-usdt'
+        else:
+            link = f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
+        
+            
         methods = r['paymentMethods']
         tradeMethods = ''
         for method in methods:
@@ -51,7 +57,7 @@ class getOkx:
             "userName": r['nickName'],
             "price": float(r['price']),
             "tradeMethods": tradeMethods,
-            "link": f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
+            "link": link
             })
 
     def sell():
@@ -65,6 +71,11 @@ class getOkx:
 
         
         merchantId = r['merchantId']
+        if merchantId == '':
+            link = 'https://www.okx.com/ru/p2p-markets/rub/sell-usdt'
+        else:
+            link = f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
+            
         methods = r['paymentMethods']
         tradeMethods = ''
         for method in methods:
@@ -77,6 +88,6 @@ class getOkx:
             "userName": r['nickName'],
             "price": float(r['price']),
             "tradeMethods": tradeMethods,
-            "link": f'https://www.okx.com/ru/p2p/ads-merchant?merchantId={merchantId}'
+            "link": link
             })
     

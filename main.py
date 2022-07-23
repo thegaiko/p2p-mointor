@@ -9,6 +9,9 @@ from hook import sendHook, startHook
 
 startHook()
  
+lastLowestBuy = ''
+lastHighestSell = ''
+
 while True:
     binanceBuy = getBinance.buy()
     binanceSell = getBinance.sell()
@@ -16,8 +19,8 @@ while True:
     okxBuy = getOkx.buy()
     okxSell = getOkx.sell()
 
-    kucoinBuy = getKucoin.buy()
-    kucoinSell = getKucoin.sell()
+    #kucoinBuy = getKucoin.buy()
+    #kucoinSell = getKucoin.sell()
 
     bybitBuy = getBybit.buy()
     bybitSell = getBybit.sell()
@@ -28,21 +31,35 @@ while True:
     okxBuyPrice = okxBuy['price']
     okxSellPrice = okxSell['price']
 
-    kucoinBuyPrice= kucoinBuy['price']
-    kucoinSellPrice = kucoinSell['price']
+    #kucoinBuyPrice= kucoinBuy['price']
+    #kucoinSellPrice = kucoinSell['price']
 
     bybitBuyPrice = bybitBuy['price']
     bybitSellPrice = bybitSell['price']
 
-    buyPrices = [ binanceBuyPrice, okxBuyPrice, kucoinBuyPrice, bybitBuyPrice ]
-    sellPrices = [ binanceSellPrice, okxSellPrice, kucoinSellPrice, bybitSellPrice ]
+    buyPrices = [ binanceBuyPrice, okxBuyPrice, bybitBuyPrice ]
+    sellPrices = [ binanceSellPrice, okxSellPrice, bybitSellPrice ]
 
-    buy = [ binanceBuy, okxBuy, kucoinBuy, bybitBuy ]
-    sell = [ binanceSell, okxSell, kucoinSell, bybitSell ]
+    buy = [ binanceBuy, okxBuy, bybitBuy ]
+    sell = [ binanceSell, okxSell, bybitSell ]
     
-    for i in range(3):
-        for j in range(3):
-            if sellPrices[j] - buyPrices[i] >= 1:
-                sendHook(buy[i], sell[j])
+    lowestBuyPrice = 100000
+    for i in range (3):
+        if buyPrices[i] < lowestBuyPrice:
+            lowestBuyPrice = buyPrices[i]
+            lowestBuy = buy[i]
+        
+    highestSellPrice = 0 
+    for i in range (3):
+        if sellPrices[i] > highestSellPrice:
+            highestSellPrice = sellPrices[i]
+            highestSell = sell[i]
+    
+    if highestSellPrice - lowestBuyPrice >= 1:
+        if (lowestBuy['userName'] != lastLowestBuy) or (highestSell['userName'] != lastHighestSell):
+            sendHook(lowestBuy, highestSell)
+            lastLowestBuy = lowestBuy['userName']
+            lastHighestSell = highestSell['userName']
+            
                 
         
