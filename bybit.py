@@ -33,19 +33,17 @@ def getReq(type, method):
 class getBybit:
     def buy():
       r = getReq(1, 75)
+      pay = 'Tinkoff'
       qiwi = getReq(1, 62) 
       if float(qiwi['price']) < float(r['price']):
           r = qiwi
+          pay = 'QIWI'
       rosbank = getReq(1, 185)  
       if float(rosbank['price']) < float(r['price']):
         r = rosbank
+        pay = 'Rosbank'
           
       merchant = str(r['userId'])
-      payMethods = r['payments']
-      allPayMethods = ''
-      for i in range(len(payMethods)):
-        x = methods[f'{payMethods[i]}']
-        allPayMethods+=f'{x}\n'
       return ({
               "platform": "Bybit",
               "maxLimit": r['maxAmount'],
@@ -53,25 +51,23 @@ class getBybit:
               "quantity": r['lastQuantity'],
               "userName": r['nickName'],
               "price": float(r['price']),
-              "tradeMethods": allPayMethods,
+              "tradeMethods": pay,
               "link": f'https://www.bybit.com/fiat/trade/otc/profile/{merchant}/USDT/RUB'
               })
         
     def sell():
         r = getReq(0, 75)
+        pay = 'Tinkoff'
         qiwi = getReq(0, 62) 
         if float(qiwi['price']) > float(r['price']):
             r = qiwi
+            pay = 'QIWI'
         rosbank = getReq(0, 185)  
         if float(rosbank['price']) > float(r['price']):
           r = rosbank
+          pay = 'Rosbank'
         
         merchant = str(r['userId'])
-        payMethods = r['payments']
-        allPayMethods = ''
-        for i in range(len(payMethods)):
-          x = methods[f'{payMethods[i]}']
-          allPayMethods+=f'{x}\n'
         return ({
                 "platform": "Bybit",
                 "maxLimit": r['maxAmount'],
@@ -79,7 +75,6 @@ class getBybit:
                 "quantity": r['lastQuantity'],
                 "userName": r['nickName'],
                 "price": float(r['price']),
-                "tradeMethods": allPayMethods,
+                "tradeMethods": pay,
                 "link": f'https://www.bybit.com/fiat/trade/otc/profile/{merchant}/USDT/RUB'
                 })
-      
