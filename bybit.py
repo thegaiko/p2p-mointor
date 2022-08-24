@@ -33,16 +33,20 @@ def getReq(type, method):
 class getBybit:
     def buy():
       r = getReq(1, 75)
+      print(1)
       pay = 'Tinkoff'
       qiwi = getReq(1, 62) 
+      print(2)
       if float(qiwi['price']) < float(r['price']):
           r = qiwi
           pay = 'QIWI'
       rosbank = getReq(1, 185)  
+      print(3)
       if float(rosbank['price']) < float(r['price']):
         r = rosbank
         pay = 'Rosbank'
-          
+        
+      print(4)  
       merchant = str(r['userId'])
       return ({
               "platform": "Bybit",
@@ -78,3 +82,5 @@ class getBybit:
                 "tradeMethods": pay,
                 "link": f'https://www.bybit.com/fiat/trade/otc/profile/{merchant}/USDT/RUB'
                 })
+        
+pprint(getBybit.buy())

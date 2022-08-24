@@ -1,22 +1,18 @@
 import requests
 
-url = "https://discord.com/api/webhooks/999994956221521970/KQi--erj7Vt5Agj-tKIZYgs2G-qBZXHgIB_295gL4W9YSjJC-l6PCSh6GnoAtr1WspEy"
+url = "https://discord.com/api/webhooks/1011647486877782096/fkKWnmISgMqkcf25tT_Nb2cF8kXbpVpZjMWNWz2xzxSiu78w1xPnh59QDRoGPHBxdtU-"
 
 def startHook():
-    data = {
-        "username" : "Arbitration"
-    }
-    data["embeds"] = [
+    data = {"username": "Arbitration", "embeds": [
         {
-        "title": "ARBIT P2P MONITOR",
-        "description": "**STARTED**",
-        "color": 12910592,
-        "footer": {
-            "text": "ARBIT",
-            "icon_url": "https://sun9-58.userapi.com/impf/jgOkfU_yUf-HUS1_zd73z61ZpJZi1l6l6PxRjA/JtNJ-75JJtY.jpg?size=1624x1624&quality=95&sign=c4820a07df07b1312763693a050d833d&type=album"
+            "description": "**P2P MONITOR STARTED**",
+            "color": 16755968,
+            "footer": {
+                "text": "Essential Investments x Gaiko",
+                "icon_url": "https://sun9-24.userapi.com/impg/opayMYZj60Se_3vV2ki13qkh_bCiULoZkIrZRQ/leNz2i2sb7o.jpg?size=2500x2500&quality=95&sign=2c2fef7af8e3adfa9eb22716dd7926e8&type=album"
+            }
         }
-        }
-    ]
+    ]}
 
     result = requests.post(url, json = data)
 
@@ -26,73 +22,70 @@ def startHook():
         print(err)
     else:
         print("Payload delivered successfully, code {}.".format(result.status_code))
-    
+
 
 
 def sendHook(buy, sell):
     buyPlatform = buy['platform']
     sellPlatform = sell['platform']
-    
+
     buyNickname = buy['userName']
     sellNickname = sell['userName']
-    
+
     buyPrice = buy['price']
     sellPrice = sell['price']
     total = sellPrice - buyPrice
-    
+
     buyQuantity = buy['quantity']
     sellMinLimit = sell['minLimit']
     sellMaxLimit = sell['maxLimit']
-    
+
     methodsBuy = buy['tradeMethods']
     methodsSell = sell['tradeMethods']
-    
+
     buyLink = buy['link']
-    sellLink = sell['link']    
-    
-    data = {
-        "username" : "Arbitration"
-    }
-    data["embeds"] = [
+    sellLink = sell['link']
+
+    data = {"username": "Arbitration", "embeds": [
         {
             "title": f'{buyPlatform} - {sellPlatform}',
             "description": f'{buyNickname} - {sellNickname}',
-            "color": 12910592,
+            "color": 16755968,
             "fields": [
                 {
-                "name": "Spread",
-                "value": f'**{buyPlatform}**: {buyPrice}\n**{sellPlatform}**: {sellPrice}\n**Total**: {total}',
-                "inline": True
+                    "name": "Spread",
+                    "value": f'**{buyPlatform}**: {buyPrice}\n**{sellPlatform}**: {sellPrice}\n**Total**: {total}',
+                    "inline": True
                 },
                 {
-                "name": "Available USDT",
-                "value": buyQuantity,
-                "inline": True
+                    "name": "Available USDT",
+                    "value": buyQuantity,
+                    "inline": True
                 },
                 {
-                "name": "Limits",
-                "value": f'₽{sellMinLimit} - ₽{sellMaxLimit}'
+                    "name": "Limits",
+                    "value": f'₽{sellMinLimit} - ₽{sellMaxLimit}'
                 },
                 {
-                "name": "Payment Method for buy",
-                "value": methodsBuy,
-                "inline": True
+                    "name": "Payment Method for buy",
+                    "value": methodsBuy,
+                    "inline": True
                 },
                 {
-                "name": "Payment Method for sell",
-                "value": methodsSell,
-                "inline": True
+                    "name": "Payment Method for sell",
+                    "value": methodsSell,
+                    "inline": True
                 },
                 {
-                "name": "Links",
-                "value": f'Buy order link - [{buyPlatform}]({buyLink})\n Sell order link - [{sellPlatform}]({sellLink})',
+                    "name": "Links",
+                    "value": f'Buy order link - [{buyPlatform}]({buyLink})\n Sell order link - [{sellPlatform}]({sellLink})',
                 }],
-                "footer": {
-                    "text": "ARBIT",
-                    "icon_url": "https://sun9-58.userapi.com/impf/jgOkfU_yUf-HUS1_zd73z61ZpJZi1l6l6PxRjA/JtNJ-75JJtY.jpg?size=1624x1624&quality=95&sign=c4820a07df07b1312763693a050d833d&type=album"
-                },
-                }
-    ]
+            "footer": {
+                "text": "Essential Investments x Gaiko",
+                "icon_url": "https://sun9-24.userapi.com/impg/opayMYZj60Se_3vV2ki13qkh_bCiULoZkIrZRQ/leNz2i2sb7o.jpg?size=2500x2500&quality=95&sign=2c2fef7af8e3adfa9eb22716dd7926e8&type=album"
+            },
+        }
+    ]}
 
     result = requests.post(url, json = data)
 

@@ -50,12 +50,12 @@ while True:
             lowestBuy = buy[i]
         
     highestSellPrice = 0 
-    for i in range (3):
+    for i in range(3):
         if sellPrices[i] > highestSellPrice:
             highestSellPrice = sellPrices[i]
             highestSell = sell[i]
     
-    if highestSellPrice - lowestBuyPrice >= 1:
+    if highestSellPrice - lowestBuyPrice >= 0:
         if (lowestBuy['userName'] != lastLowestBuy) or (highestSell['userName'] != lastHighestSell):
             sendHook(lowestBuy, highestSell)
             lastLowestBuy = lowestBuy['userName']
